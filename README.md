@@ -27,6 +27,7 @@ Struktura projektu je rozdělena do hlavičkových souborů (`.h`) a implementa�
 /textova-hra-sablona/
 |
 |-- .devcontainer/         # Konfigurace potřebné pro spuštění v devcontaineru
+|
 |-- .vscode/
 |   |-- tasks.json         # Konfigurace pro snadnou kompilaci ve VS Code
 |
