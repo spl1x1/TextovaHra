@@ -1,6 +1,22 @@
-# Šablona pro Textovou Adventuru
+# Textová Hra
 
-Tento repozitář slouží jako základní kostra pro vytvoření vaší vlastní hry v C++.
+Script pro spuštění run.sh
+> ./run.sh
+
+mimo složku se skriptem
+>/workspaces/TextovaHra/run.sh
+
+Je možné, že budete potřebovat změnit permise souboru
+>chmod 770 run.sh
+
+nebo
+
+>chmod 770 /workspaces/TextovaHra/run.sh
+
+
+Prosím neupravovat CMakeLists.txt.
+
+
 
 ## Cíl projektu
 
@@ -69,7 +85,3 @@ g++ src/*.cpp -o game -std=c++17
   * Každý člen týmu musí mít v Gitu viditelné commity.
   * Hra musí být hratelná a mít jasný cíl/konec.
   * Hodnotit se budete navzájem každý student bude mít dva hlasy, které může dát libovolnému projektu. Není možné použít oba hlasy na stejný projekt.
-
-Hodně štěstí!
-
-```
