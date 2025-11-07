@@ -1,5 +1,13 @@
 # Textová Hra
 
+Něco na styl Wolfenstein 3D, takže nějaký výběr cesty v koridorech, kde budou různé předměty či enemy
+Cílem bude dojít na správný konec bludiště a zabít hlavního enemy (nějaký středový zlobr nebo něco takového)
+Zároveň medieval styl, takže meče atd., postava bude mít výstroj a výbroj a HP pool
+Možná nějaké prvky ze Shakes&Fidget, jako je aréna a grind skillů a zbraní
+Bude obsahovat nějaký grafický design v terminálu
+
+
+
 Script pro spuštění run.sh
 > ./run.sh
 
