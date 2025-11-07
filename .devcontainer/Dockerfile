@@ -18,4 +18,5 @@ RUN if [ "${REINSTALL_CMAKE_VERSION_FROM_SOURCE}" != "none" ]; then \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
 
 # Instalace Pythonu a potřebných nástrojů
+RUN apt-get install -y 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive

@@ -1,9 +1,34 @@
 #include <iostream>
 #include "Game.h"
+#include <ftxui/dom/elements.hpp>
+#include <ftxui/screen/screen.hpp>
 
-int main() {
-    Game textAdventure;
-    textAdventure.run();
-    
+int main()
+{
+
+    using namespace ftxui;
+
+    // Create a simple document with three text elements.
+    Element document = hbox({
+        text("left") | border,
+        text("middle") | border | flex,
+        text("right") | border,
+    });
+
+    // Create a screen with full width and height fitting the document.
+    auto screen = Screen::Create(
+        Dimension::Full(),       // Width
+        Dimension::Fit(document) // Height
+    );
+
+    // Render the document onto the screen.
+    Render(screen, document);
+    screen.Print(); // Print the screen to the console.
+    while (true)
+        ;
+
+    // Game textAdventure;
+    // textAdventure.run();
+
     return 0;
 }
