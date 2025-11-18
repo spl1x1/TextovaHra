@@ -7,15 +7,12 @@ int main() {
     Game game;
     Window window(game);
 
-    window.render();
     std::cin.get();
-    window.setContext(GAME);
-    window.render();
     game.initCookie();
 
-    while (game.running) {
-        window.render();
-    }
+    window.render();
+    window.quit();
+
 
     return 0;
 }

@@ -22,6 +22,12 @@ void Game::click() {
         progress = 0.0;
     }
     progress += 0.1;
+
+
+    cookieProgress += clickPower;
+    cookies += static_cast<int>(cookieProgress);
+    allTimeCookies += static_cast<int>(cookieProgress);
+    cookieProgress -= static_cast<int>(cookieProgress);
 }
 
 void Game::gameLoop() {
@@ -37,6 +43,7 @@ void Game::gameLoop() {
     cookieProgress += autoClick * (deltaTime.count() / 1000.0);
     int deltaCookies = static_cast<int>(cookieProgress);
     cookies += deltaCookies;
+    allTimeCookies += deltaCookies;
     cookieProgress -= deltaCookies;
     cookieMutex.unlock();
 }

@@ -5,36 +5,28 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
+#include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/canvas.hpp>
 #include <ftxui/dom/node.hpp>
 #include <ftxui/screen/screen.hpp>
 
 #include "Game.hpp"
 
-enum context {
-    SPLASH_SCREEN,
-    GAME,
-    STORE
-};
-
 class Window {
-    ftxui::Canvas cookieCanvas = ftxui::Canvas(100, 100);
-    Game *game = nullptr;
-    context currentContext = SPLASH_SCREEN;
-    ftxui::Screen screen;
-    std::unordered_map<std::string, ftxui::Element> documents;
+    int mouse_x = 0;
+    int mouse_y = 0;
 
-    void drawDocuments();
+
+    Canvas cookieCanvas = ftxui::Canvas(100, 100);
+    Game *game = nullptr;
+    ScreenInteractive screen;
 
 
 public:
     Window(Game &game);
     void render();
-    void setContext(context newContext) {;
-        currentContext = newContext;
-    }
 
-
+    void quit();
 };
 
 

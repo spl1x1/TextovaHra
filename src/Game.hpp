@@ -22,6 +22,7 @@ public:
     std::mutex cookieMutex;
 
     int cookies = 0;
+    int allTimeCookies = 0;
     double cookieProgress = 0.0;
 
 
