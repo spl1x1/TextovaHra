@@ -5,7 +5,14 @@
 #include "Game.hpp"
 
 void Game::update() {
-
+    cookieMutex.lock();
+    autoClick = 0.0;
+    clickPower = 1.0;
+    for (const auto &item : Items) {
+        autoClick += item.cps;
+        clickPower += item.clickPower;
+    }
+    cookieMutex.unlock();
 }
 
 
@@ -23,10 +30,10 @@ void Game::gameLoop() {
 
     const auto start = std::chrono::high_resolution_clock::now();
     std::this_thread::sleep_for(2000ms);
+    cookieMutex.lock();
     const auto end = std::chrono::high_resolution_clock::now();
     const std::chrono::duration<double, std::milli> deltaTime = end - start;
 
-    cookieMutex.lock();
     cookieProgress += autoClick * (deltaTime.count() / 1000.0);
     int deltaCookies = static_cast<int>(cookieProgress);
     cookies += deltaCookies;

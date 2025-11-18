@@ -8,7 +8,9 @@ file(GLOB SOURCES "src/*.cpp" "src/*.hpp")
 
 add_executable(TextovaHra ${SOURCES}
         src/Item.cpp
-        src/Item.hpp)
+        src/Item.hpp
+        src/Items/Sword.cpp
+        src/Items/Sword.hpp)
 
 include(cmake/CPM.cmake)
 

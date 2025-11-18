@@ -9,6 +9,8 @@
 #include <utility>
 
 
+using namespace ftxui;
+
 class Item {
 public:
     std::string name;
@@ -18,8 +20,8 @@ public:
     ftxui:: Canvas itemCanvas = ftxui::Canvas(50, 50);
 
 
-    Item(std::string name, int baseCost, double cps)
-            : name(std::move(name)), baseCost(baseCost), cps(cps) {}
+    Item(std::string name, int baseCost, double cps, double clickPower)
+            : name(std::move(name)), baseCost(baseCost), cps(cps), clickPower(clickPower) {}
 };
 
 
