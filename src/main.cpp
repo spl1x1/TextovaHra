@@ -10,9 +10,9 @@ int main() {
     std::cin.get();
     game.initCookie();
 
-    while (game.running) {
-        window.render();
-    }
+    window.render();
+    window.quit();
+
 
     return 0;
 }

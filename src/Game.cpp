@@ -22,6 +22,12 @@ void Game::click() {
         progress = 0.0;
     }
     progress += 0.1;
+
+
+    cookieProgress += clickPower;
+    cookies += static_cast<int>(cookieProgress);
+    allTimeCookies += static_cast<int>(cookieProgress);
+    cookieProgress -= static_cast<int>(cookieProgress);
 }
 
 void Game::gameLoop() {

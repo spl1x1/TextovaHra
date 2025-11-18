@@ -10,38 +10,56 @@
 
 using namespace ftxui;
 
+void Window::quit() {
+    system("clear");
+
+    auto exitScreen = vbox(
+    text("Děkujeme za hraní ultimátního cookie clickeru!") | center | bold | color(Color::Blue) ,
+    separator() ,
+    canvas(cookieCanvas) | center,
+    separator(),
+    text("Váš konečný počet cookies: " + std::to_string(game->cookies)) | center
+) | border;
+
+
+    Render(screen, exitScreen);
+    screen.Print();
+
+}
+
 
 void Window::render() {
     game->cookieMutex.lock();
-    auto cLevel = "Level: " + std::to_string(game->level);
 
-    auto part1 = vbox(
-    text("Ultimátní cookie clicker!") | center | bold | color(Color::Blue),
-    separator(),
-    text(cLevel) | center,
-    border(gauge(game->progress)) | xflex
-) | border;
+    auto elements = [&] () -> Element {
+        return vbox(
+        text("Ultimátní cookie clicker!") | center | bold | color(Color::Blue),
+        separator(),
+        text("Level: " + std::to_string(game->level)) | center,
+        separator(),
+        border(gauge(game->progress)) | xflex,
+        separator(),
+        text("Cookies: " + std::to_string(game->cookies)) | center,
+        separator(),
+        canvas(cookieCanvas) | center
+        ) | border;
+    };
 
     auto buttons = Container::Vertical({
         Button("Click me!", [&] {
             game->click();
-
         }),
         Button("Go to Store", [&] {
         }),
         Button("Exit", [&] {
             game->running = false;
-            screen.ExitLoopClosure();
+            screen.ExitLoopClosure()();
         }),
     });
 
-    auto part2 = vbox(
-        canvas(cookieCanvas) | center
-    ) | border;
 
     auto gameComponent = Container::Vertical({
-        Renderer([&] { return part1; }),
-        Renderer([&] { return part2; }),
+        Renderer([&] { return elements(); }),
         buttons
     });
 
@@ -72,6 +90,8 @@ Window::Window(Game &game) : screen(ftxui::ScreenInteractive::Fullscreen()) {
         text("Press any key to start...") | center,
         canvas(cookieCanvas) | center
     ) | border;
+
+
 
     Render(screen, splashScreen);
     screen.Print();

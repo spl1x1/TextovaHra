@@ -25,6 +25,8 @@ class Window {
 public:
     Window(Game &game);
     void render();
+
+    void quit();
 };
 
 
