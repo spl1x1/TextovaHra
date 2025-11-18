@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/cpp
 {
-	"name": "C++ a Python",
+	"name": "Ultimatni container",
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
@@ -28,4 +28,5 @@
 	// "customizations": {},
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	"remoteUser": "root"
+
 }
