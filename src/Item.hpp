@@ -22,6 +22,8 @@ public:
 
     Item(std::string name, int baseCost, double cps, double clickPower)
             : name(std::move(name)), baseCost(baseCost), cps(cps), clickPower(clickPower) {}
+
+
 };
 
 

@@ -37,6 +37,7 @@ void Game::gameLoop() {
     cookieProgress += autoClick * (deltaTime.count() / 1000.0);
     int deltaCookies = static_cast<int>(cookieProgress);
     cookies += deltaCookies;
+    allTimeCookies += deltaCookies;
     cookieProgress -= deltaCookies;
     cookieMutex.unlock();
 }
