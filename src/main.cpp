@@ -1,34 +1,21 @@
 #include <iostream>
-#include "Game.h"
-#include <ftxui/dom/elements.hpp>
-#include <ftxui/screen/screen.hpp>
 
-int main()
-{
+#include "Game.hpp"
+#include "Window.hpp"
 
-    using namespace ftxui;
+int main() {
+    Game game;
+    Window window(game);
 
-    // Create a simple document with three text elements.
-    Element document = hbox({
-        text("left") | border,
-        text("middle") | border | flex,
-        text("right") | border,
-    });
+    window.render();
+    std::cin.get();
+    window.setContext(GAME);
+    window.render();
+    game.initCookie();
 
-    // Create a screen with full width and height fitting the document.
-    auto screen = Screen::Create(
-        Dimension::Full(),       // Width
-        Dimension::Fit(document) // Height
-    );
-
-    // Render the document onto the screen.
-    Render(screen, document);
-    screen.Print(); // Print the screen to the console.
-    while (true)
-        ;
-
-    // Game textAdventure;
-    // textAdventure.run();
+    while (game.running) {
+        window.render();
+    }
 
     return 0;
 }

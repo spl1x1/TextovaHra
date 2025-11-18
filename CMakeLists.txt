@@ -4,9 +4,11 @@ project(TextovaHra)
 
 set(CMAKE_CXX_STANDARD 14)
 
-file(GLOB SOURCES "src/*.cpp")
+file(GLOB SOURCES "src/*.cpp" "src/*.hpp")
 
-add_executable(TextovaHra ${SOURCES})
+add_executable(TextovaHra ${SOURCES}
+        src/Item.cpp
+        src/Item.hpp)
 
 include(cmake/CPM.cmake)
 

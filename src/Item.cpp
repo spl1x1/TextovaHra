@@ -1,6 +1,5 @@
-#include "Item.h"
+//
+// Created by Lukáš Kaplánek on 18.11.2025.
+//
 
-Item::Item(std::string name, std::string description) {
-    this->name = name;
-    this->description = description;
-}
+#include "Item.hpp"
