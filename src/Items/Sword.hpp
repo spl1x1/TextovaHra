@@ -4,11 +4,11 @@
 
 #ifndef SWORD_HPP
 #define SWORD_HPP
-#include "../Item.hpp"
+#include "Item.hpp"
 
 
 class Sword : public Item{
-
+public:
     Sword(): Item("Sword", 100, 0, 0) {
 
        itemCanvas.DrawPointCircleFilled(50, 30, 6, Color::RGB(200, 200, 210));   // horní část čepele

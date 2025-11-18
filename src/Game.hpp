@@ -9,7 +9,7 @@
 #include <thread>
 #include <vector>
 
-#include "Item.hpp"
+#include "Items/Item.hpp"
 
 
 class Game {
