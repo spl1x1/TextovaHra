@@ -20,4 +20,4 @@ RUN if [ "${REINSTALL_CMAKE_VERSION_FROM_SOURCE}" != "none" ]; then \
 # Instalace Pythonu a potřebných nástrojů
 RUN apt-get install -y
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive
-RUN apt-get install apt-get install libpthread-stubs0-dev
+RUN apt-get install libpthread-stubs0-dev -y
