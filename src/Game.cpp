@@ -9,8 +9,10 @@ void Game::update() {
     autoClick = 0.0;
     clickPower = 1.0;
     for (const auto &item : Items) {
-        autoClick += item.cps;
-        clickPower += item.clickPower;
+        for (int i = 0; i < item.amount; i++) {
+            autoClick += item.item.cps;
+            clickPower += item.item.clickPower;
+        }
     }
     cookieMutex.unlock();
 }
@@ -20,8 +22,9 @@ void Game::click() {
     if (progress >= 1.0) {
         level += 1;
         progress = 0.0;
+        levelDifficulty = exp(levelDifficulty);
     }
-    progress += 0.1;
+    progress += 0.1f/levelDifficulty * progressMultiplier;
 
 
     cookieProgress += clickPower;

@@ -4,14 +4,15 @@
 #include "Window.hpp"
 
 int main() {
-    Game game;
+    Game *game = new Game();
     Window window(game);
 
     std::cin.get();
-    game.initCookie();
+    game->initCookie();
 
     window.render();
     window.quit();
+    delete game;
 
 
     return 0;

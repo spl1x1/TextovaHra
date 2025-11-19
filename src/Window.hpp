@@ -23,7 +23,7 @@ class Window {
 
 
 public:
-    Window(Game &game);
+    Window(Game *game);
     void render();
 
     void quit();

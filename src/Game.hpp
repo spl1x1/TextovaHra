@@ -11,6 +11,10 @@
 
 #include "Items/Item.hpp"
 
+struct ownedItem {
+    Item item;
+    int amount = 0;
+};
 
 class Game {
     void gameLoop();
@@ -32,14 +36,22 @@ public:
 
     int level = 1;
     float progress = 0.0;
+    float levelDifficulty = 2.0;
     double progressMultiplier = 0.1;
 
-    std::vector<Item> Items;
+    std::vector<ownedItem> Items;
 
     void update();
     void click();
     void initCookie() {
         cookieThread = std::thread(&Game::gameLoop, this);
+    }
+
+    ~Game() {
+        running = false;
+        if (cookieThread.joinable()) {
+            cookieThread.join();
+        }
     }
 };
 

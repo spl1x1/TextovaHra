@@ -15,10 +15,8 @@ void Window::quit() {
 
     auto exitScreen = vbox(
     text("Děkujeme za hraní ultimátního cookie clickeru!") | center | bold | color(Color::Blue) ,
-    separator() ,
-    canvas(cookieCanvas) | center,
-    separator(),
-    text("Váš konečný počet cookies: " + std::to_string(game->cookies)) | center
+    text("Váš celkový počet cookies: " + std::to_string(game->allTimeCookies)) | center,
+    canvas(cookieCanvas) | center
 ) | border;
 
 
@@ -104,8 +102,8 @@ void Window::render() {
 
 }
 
-Window::Window(Game &game) : screen(ftxui::ScreenInteractive::FixedSize(140,25)) {
-    this->game = &game;
+Window::Window(Game *game) : screen(ftxui::ScreenInteractive::FixedSize(140,25)) {
+    this->game = game;
     // Hlavní tělo cookie (vnější kruh)
     cookieCanvas.DrawPointCircle(50, 50, 20, Color::RGB(210, 180, 140));
     cookieCanvas.DrawPointCircleFilled(50, 50, 20, Color::RGB(210, 180, 140));
@@ -122,7 +120,6 @@ Window::Window(Game &game) : screen(ftxui::ScreenInteractive::FixedSize(140,25))
 
     auto splashScreen = vbox(
         text("Vítej v ultimátním cookie clickeru!") | center | bold | color(Color::Blue) ,
-        separator() ,
         text("Press any key to start...") | center,
         canvas(cookieCanvas) | center
     ) | border;
