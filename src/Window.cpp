@@ -5,8 +5,8 @@
 #include "Window.hpp"
 
 #include <ftxui/component/component.hpp>
-#include <ftxui/dom/elements.hpp>
 #include <ftxui/component/screen_interactive.hpp>
+#include <ftxui/dom/elements.hpp>
 
 using namespace ftxui;
 
@@ -31,44 +31,80 @@ void Window::quit() {
 void Window::render() {
     game->cookieMutex.lock();
 
-    auto elements = [&] () -> Element {
-        return vbox(
-        text("Ultimátní cookie clicker!") | center | bold | color(Color::Blue),
-        separator(),
-        text("Level: " + std::to_string(game->level)) | center,
-        separator(),
-        border(gauge(game->progress)) | xflex,
-        separator(),
-        text("Cookies: " + std::to_string(game->cookies)) | center,
-        separator(),
-        canvas(cookieCanvas) | center
-        ) | border;
-    };
+    bool showStore = false;
+
+    CheckboxOption storeOption1;
+    CheckboxOption storeOption2;
+    CheckboxOption storeOption3;
+
+    storeOption1.label = "x: " + std::to_string(screen.dimx());
+    storeOption2.label = "y: " + std::to_string(screen.dimx());
+    storeOption3.label = "Mega Cookie";
+
+    storeOption1.checked = false;
+    storeOption2.checked = false;
+    storeOption3.checked = false;
+
+    auto store = Container::Vertical({
+        Checkbox(storeOption1),
+        Checkbox(storeOption2),
+        Checkbox(storeOption3),
+        Button ("Buy", [&] {
+        })});
+    auto storeMaybe = Maybe(store, &showStore);
+
 
     auto buttons = Container::Vertical({
-        Button("Click me!", [&] {
-            game->click();
+        Button("Store", [&] {
+            showStore = !showStore;
         }),
-        Button("Go to Store", [&] {
-        }),
+        storeMaybe,
         Button("Exit", [&] {
             game->running = false;
             screen.ExitLoopClosure()();
         }),
     });
 
+    auto renderer = Renderer([&] { return vbox(
+        text("Ultimátní cookie clicker!") | center | bold | color(Color::Blue),
+        separator(),
+        text("Level: " + std::to_string(game->level)) | center,
+        border(gauge(game->progress)) | border | xflex,
+        text("Cookies: " + std::to_string(game->cookies)) | center,
+        text("CPS: " + std::to_string(game->cps) + " cookies/second") | center,
+        text("Mouse x: " + std::to_string(mouse_x)) | center,
+        text("Mouse y: " + std::to_string(mouse_y)) | center
+        ) | border; });
 
-    auto gameComponent = Container::Vertical({
-        Renderer([&] { return elements(); }),
+    auto cookie_renderer = Renderer([&] {
+        return canvas(cookieCanvas) | center | border ;
+    });
+
+
+    auto mouseEvent = CatchEvent(cookie_renderer, [&](Event event)-> bool {
+        mouse_x = event.mouse().x;
+        mouse_y = event.mouse().y;
+        if (!event.is_mouse()) return false;
+        if (event.mouse().button != Mouse::Left || event.mouse().motion > 0)return false;
+        if (event.mouse().x < 45 || event.mouse().x > 66) return false;
+        if (event.mouse().y < 8 || event.mouse().y > 19) return false;
+        game->click();
+        return true;
+    });
+
+    auto gameComponent = Container::Horizontal({
+        renderer,
+        mouseEvent,
         buttons
     });
+
 
     game->cookieMutex.unlock();
     screen.Loop(gameComponent);
 
 }
 
-Window::Window(Game &game) : screen(ftxui::ScreenInteractive::Fullscreen()) {
+Window::Window(Game &game) : screen(ftxui::ScreenInteractive::FixedSize(140,25)) {
     this->game = &game;
     // Hlavní tělo cookie (vnější kruh)
     cookieCanvas.DrawPointCircle(50, 50, 20, Color::RGB(210, 180, 140));
@@ -94,5 +130,6 @@ Window::Window(Game &game) : screen(ftxui::ScreenInteractive::Fullscreen()) {
 
 
     Render(screen, splashScreen);
+
     screen.Print();
 }
