@@ -14,8 +14,7 @@ add_executable(TextovaHra
         ${ITEMS})
 
 add_executable(ItemTest
-        ${ITEMS}
-        src/Tests/ItemTest.cpp)
+        ${ITEMS})
 
 
 include(cmake/CPM.cmake)
@@ -33,5 +32,14 @@ target_link_libraries(ItemTest
         ftxui::dom
         ftxui::screen
 )
+
+add_custom_target(copy_assets ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_CURRENT_SOURCE_DIR}/assets"
+        "${CMAKE_BINARY_DIR}/assets"
+        COMMENT "Copying assets directory")
+
+add_dependencies(TextovaHra copy_assets)
+add_dependencies(ItemTest copy_assets)
 
 

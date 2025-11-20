@@ -7,16 +7,18 @@
 #include <ftxui/dom/elements.hpp>
 #include <iostream>
 
+#include "../Items/Cursor.hpp"
+
 using namespace ftxui;
 
 int main(int argc, char *argv[]) {
-    auto sword = Sword();
+    auto item = Cursor();
 
     auto screen = Screen::Create(Dimension::Full(), Dimension::Full());
     auto itemTest = vbox(
-        text("Vítej v ultimátním cookie clickeru!") | center | bold | color(Color::Blue) ,
+        text("Test ultimátního cookie clickeru!") | center | bold | color(Color::Blue) ,
         separator() ,
-        canvas(sword.itemCanvas) | center
+        canvas(item.itemCanvas) | center
     ) | border;
 
 

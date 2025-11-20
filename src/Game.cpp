@@ -4,19 +4,35 @@
 
 #include "Game.hpp"
 
+#include "Items/Cursor.hpp"
+#include "Items/Factory.hpp"
+
 void Game::update() {
     cookieMutex.lock();
     autoClick = 0.0;
     clickPower = 1.0;
-    for (const auto &item : Items) {
+    for (const auto &item : Buildings) {
         for (int i = 0; i < item.amount; i++) {
-            autoClick += item.item.cps;
-            clickPower += item.item.clickPower;
+            autoClick += item.cps;
+            clickPower += item.clickPower;
+        }
+    }
+    for (const auto &item : Upgrades) {
+        for (int i = 0; i < item.amount; i++) {
+            autoClick += item.cps;
+            clickPower += item.clickPower;
         }
     }
     cookieMutex.unlock();
 }
 
+void Game::initCookie() {
+    Buildings.push_back(Cursor());
+    Buildings.push_back(Factory());
+
+    cookieThread = std::thread(&Game::gameLoop, this);
+
+}
 
 void Game::click() {
     if (progress >= 1.0) {

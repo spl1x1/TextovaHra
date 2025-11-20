@@ -6,24 +6,27 @@
 #define ITEM_HPP
 #include <string>
 #include <ftxui/dom/canvas.hpp>
-#include <utility>
 
 
 using namespace ftxui;
 
 class Item {
+protected:
+    void drawFromPNG(const std::string& filename);
 public:
+    std::string displayName;
     std::string name;
     int baseCost;
-    double clickPower = 0;
-    double cps = 0;
-    ftxui:: Canvas itemCanvas = ftxui::Canvas(50, 50);
+    int amount = 0;
+    double clickPower;
+    double cps;
+    Canvas itemCanvas = Canvas(16, 16);
 
+    std::string description;
 
-    Item(std::string name, int baseCost, double cps, double clickPower)
-            : name(std::move(name)), baseCost(baseCost), cps(cps), clickPower(clickPower) {}
-
-
+    Item(const std::string& name, int baseCost, double cps, double clickPower);
+    void setDisplayName(const std::string& name);
+    void setDescription(const std::string& desc);
 };
 
 

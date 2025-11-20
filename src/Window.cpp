@@ -4,9 +4,11 @@
 
 #include "Window.hpp"
 
+#include <iomanip>
 #include <ftxui/component/component.hpp>
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/elements.hpp>
+
 
 using namespace ftxui;
 
@@ -29,39 +31,53 @@ void Window::quit() {
 void Window::render() {
     game->cookieMutex.lock();
 
-    bool showStore = false;
 
-    CheckboxOption storeOption1;
-    CheckboxOption storeOption2;
-    CheckboxOption storeOption3;
+    // Store
 
-    storeOption1.label = "x: " + std::to_string(screen.dimx());
-    storeOption2.label = "y: " + std::to_string(screen.dimx());
-    storeOption3.label = "Mega Cookie";
+    auto ItemComponent = [](const Item &item) -> Component {
+        CheckboxOption Option;
+        Option.label = item.name;
+        Option.checked = false;
 
-    storeOption1.checked = false;
-    storeOption2.checked = false;
-    storeOption3.checked = false;
+        return Container::Horizontal({
+            Checkbox(Option) | center,
+            Renderer([&] {
+                return canvas(item.itemCanvas);
+            }) | center ,
+        }) | border | xflex;
+    };
 
-    auto store = Container::Vertical({
-        Checkbox(storeOption1),
-        Checkbox(storeOption2),
-        Checkbox(storeOption3),
+
+    auto buildings = Container::Vertical({
+            ItemComponent(game->Buildings[0]),
+            ItemComponent(game->Buildings[1]),
+            Button ("Buy", [&] {
+            })
+
+        });
+
+    auto upgrades = Container::Vertical({
+        //ItemComponent(game->Upgrades[0]),
+        //ItemComponent(game->Upgrades[1]),
         Button ("Buy", [&] {
-        })});
-    auto storeMaybe = Maybe(store, &showStore);
+        })
+
+    });
 
 
-    auto buttons = Container::Vertical({
-        Button("Store", [&] {
-            showStore = !showStore;
-        }),
-        storeMaybe,
+    auto buildingCollapsible = Collapsible("Buildings", buildings);
+    auto upgradeCollapsible = Collapsible("Upgrades", upgrades);
+
+
+    auto buttons = Container::Horizontal({
+        buildingCollapsible | border,
+        upgradeCollapsible | border,
         Button("Exit", [&] {
             game->running = false;
             screen.ExitLoopClosure()();
         }),
-    });
+    }) | flex
+;
 
     auto renderer = Renderer([&] { return vbox(
         text("Ultimátní cookie clicker!") | center | bold | color(Color::Blue),
@@ -75,7 +91,7 @@ void Window::render() {
         ) | border; });
 
     auto cookie_renderer = Renderer([&] {
-        return canvas(cookieCanvas) | center | border ;
+        return canvas(cookieCanvas) | center | border | notflex;
     });
 
 

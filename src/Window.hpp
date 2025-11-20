@@ -7,8 +7,7 @@
 
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/canvas.hpp>
-#include <ftxui/dom/node.hpp>
-#include <ftxui/screen/screen.hpp>
+
 
 #include "Game.hpp"
 
@@ -23,7 +22,7 @@ class Window {
 
 
 public:
-    Window(Game *game);
+    explicit Window(Game *game);
     void render();
 
     void quit();
