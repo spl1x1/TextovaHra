@@ -29,8 +29,9 @@ void Game::update() {
 void Game::initCookie(ScreenInteractive& screen) {
     Buildings.push_back(Cursor());
     Buildings.push_back(Factory());
+    this->screen = &screen;
 
-    cookieThread = std::thread(&Game::gameLoop, this, std::ref(screen));
+    cookieThread = std::thread(&Game::gameLoop, this);
 
 }
 
@@ -47,7 +48,7 @@ void Game::click() {
     allTimeCookies += clickPower;
 }
 
-void Game::gameLoop(ScreenInteractive &screen) {
+void Game::gameLoop() {
     double lastCookieCount = 0;
     while (running) {
         using namespace std::chrono_literals;
@@ -62,7 +63,7 @@ void Game::gameLoop(ScreenInteractive &screen) {
         cookies += deltaCookies;
         allTimeCookies += deltaCookies;
         lastCookieCount = allTimeCookies;
+        screen->PostEvent(Event::Custom);
         cookieMutex.unlock();
-        screen.PostEvent(Event::Custom);
     }
 }

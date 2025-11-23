@@ -3,7 +3,10 @@
 //
 
 #include "Item.hpp"
+
+#ifndef STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
+#endif
 #include "../stb_image.h"
 
 void Item::drawFromPNG(const std::string& filename) {
@@ -25,7 +28,7 @@ void Item::drawFromPNG(const std::string& filename) {
     stbi_image_free(data);
 }
 
-Item::Item(const std::string& name, int baseCost, double cps, double clickPower):name(name),baseCost(baseCost), cps(cps), clickPower(clickPower)
+Item::Item(const std::string& name, int baseCost, double cps, double clickPower, int requiredLevel):name(name),baseCost(baseCost), cps(cps), clickPower(clickPower), requiredLevel(requiredLevel)
 {
     selected = new bool(false);
     drawFromPNG("assets/"+name+".png");

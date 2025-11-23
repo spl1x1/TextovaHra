@@ -13,7 +13,8 @@
 #include "Items/Item.hpp"
 
 class Game {
-    void gameLoop(ScreenInteractive &screen);
+    void gameLoop();
+    ScreenInteractive *screen = nullptr;
 
 public:
     bool running = true;

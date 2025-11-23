@@ -18,6 +18,7 @@ public:
     std::string name;
     int baseCost;
     int amount = 0;
+    int requiredLevel = 0;
     double clickPower;
     double cps;
     Canvas itemCanvas = Canvas(16, 16);
@@ -26,7 +27,7 @@ public:
 
     bool *selected;
 
-    Item(const std::string& name, int baseCost, double cps, double clickPower);
+    Item(const std::string& name, int baseCost, double cps, double clickPower, int requiredLevel = 0);
     void setDisplayName(const std::string& name);
     void setDescription(const std::string& desc);
 };

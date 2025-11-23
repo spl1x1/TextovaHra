@@ -33,61 +33,84 @@ void Window::render() {
 
 
     // Store
-
-    auto ItemComponent = [](const Item &item) -> Component {
+    auto ItemComponent = [&](const Item &item) -> Component {
         return Container::Horizontal({
             Checkbox( item.name, item.selected) | center,
             Renderer([&] {
-                return hbox(
+                auto itemText = vbox(
+                    text(" Cost: " + std::to_string(item.baseCost * (item.amount+1))) | center,
+                    text (" Amount: " + std::to_string(item.amount)) | center,
+                    text(" Req. Level: " + std::to_string(item.requiredLevel)) | center,
+                    text(" CPS: " + std::to_string(item.cps)) | center,
+                    text(" Click Power: " + std::to_string(item.clickPower)) | center
+                );
+                auto box = hbox(
                     canvas(item.itemCanvas),
-                    text(" Cost: " + std::to_string(item.baseCost * (item.amount+1))) | center
+                    itemText
                     );
+                if (game->level < item .requiredLevel) {
+                    return box | color(Color::Red) | dim ;
+                }
+                if (game->cookies < item.baseCost * (item.amount + 1)) {
+                    return box | color(Color::Yellow) | dim ;
+                }
+                return box | color(Color::Green) ;
             }) | center ,
         }) | border | xflex;
     };
 
     std::vector<Element> output;
-    auto buildings = Container::Vertical({
-        ItemComponent (game->Buildings[0]),
-        ItemComponent (game->Buildings[1]),
-        Button ("Buy", [&] {
+    auto buyButton =[&] (std::vector<Item>& itemList)->Component {
+        return Button("Buy", [&] {
             output.clear();
-            for (auto &item : game->Buildings) {
+            for (auto &item : itemList) {
                 if (*item.selected) {
-                    if (game->cookies < item.baseCost * (item.amount + 1)) {
-                        output.push_back(text("Not enough cookies for " + item.name + "!") | color(Color::Red) | center);
-                        continue;
-                    }
-                    game->cookies -= item.baseCost * (item.amount + 1);
-                    item.amount += 1;
-                    game->update();
-                    output.push_back(text("Bought 1 " + item.name + "!") | color(Color::Green) | center);
+                if (game->level < item.requiredLevel) {
+                output.push_back(text("Level too low for " + item.name + "!") | color(Color::Red) | center);
+                continue;
+                }
+                if (game->cookies < item.baseCost * (item.amount + 1)) {
+                    output.push_back(text("Not enough cookies for " + item.name + "!") | color(Color::Red) | center);
+                    continue;
+                }
+                game->cookies -= item.baseCost * (item.amount + 1);
+                item.amount += 1;
+                game->update();
+                output.push_back(text("Bought 1 " + item.name + "!") | color(Color::Green) | center);
                 }
             }
-        }),
-        Renderer([&] {
-            return vbox(output);
-            })
         });
+    };
 
-    auto upgrades = Container::Vertical({
-        //ItemComponent(game->Upgrades[0]),
-        //ItemComponent(game->Upgrades[1]),
-        Button ("Buy", [&] {
+    auto itemComponents = [&](std::vector<Item>& itemList) -> Components {;
+        auto components = Components();
+        for (auto &i : itemList) {
+            components.push_back(ItemComponent(i));
+        }
+        components.push_back(buyButton(itemList));
+        components.push_back(
+            Renderer([&] {
+                return vbox(output);
+            }));
+        return components;
+    };
 
-        })
+    int tab_selected = 0;
 
+    std::vector<std::string> tab_names = {
+        "Buildings",
+        "Upgrades"
+    };
+
+    auto buttons = Container::Tab({
+        Container::Vertical(itemComponents(game->Buildings)),
+        Container::Vertical(itemComponents(game->Upgrades)),
+    } , &tab_selected) | xflex;
+
+    auto store = Container::Vertical({
+        Toggle(tab_names, &tab_selected) | border,
+        buttons
     });
-
-
-    auto buildingCollapsible = Collapsible("Buildings", buildings);
-    auto upgradeCollapsible = Collapsible("Upgrades", upgrades);
-
-
-    auto buttons = Container::Horizontal({
-        buildingCollapsible | border,
-        upgradeCollapsible | border
-    }) | flex
 ;
     auto cookiePanel = Container::Vertical({
         Renderer([&] { return vbox(
@@ -99,7 +122,7 @@ void Window::render() {
         text("All time cookies: " + std::to_string(static_cast<int>(game->allTimeCookies))) | center,
         text("CPS: " + std::to_string(game->cps) + " cookies/second") | center,
         text("Click Power: " + std::to_string(game->clickPower) + " cookies/click") | center,
-        text("Auto Click: " + std::to_string(game->autoClick) + " cookies/2 seconds") | center
+        text("Auto Click: " + std::to_string(game->autoClick) + " cookies/seconds") | center
         ) | border; }),
         Button("Exit", [&] {
     game->running = false;
@@ -117,16 +140,16 @@ void Window::render() {
         mouse_y = event.mouse().y;
         if (!event.is_mouse()) return false;
         if (event.mouse().button != Mouse::Left || event.mouse().motion > 0)return false;
-        if (event.mouse().x < 45 || event.mouse().x > 66) return false;
+        if (event.mouse().x < 60 || event.mouse().x > 80) return false;
         if (event.mouse().y < 8 || event.mouse().y > 19) return false;
         game->click();
         return true;
     });
 
     auto gameComponent = Container::Horizontal({
-        cookiePanel,
-        mouseEvent,
-        buttons
+        cookiePanel |  size(WIDTH, EQUAL, 40),
+        mouseEvent |  size(WIDTH, EQUAL, 60),
+        store |  size(WIDTH, EQUAL, 40)
     });
 
 
