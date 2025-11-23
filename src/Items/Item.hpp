@@ -11,8 +11,6 @@
 using namespace ftxui;
 
 class Item {
-protected:
-    void drawFromPNG(const std::string& filename);
 public:
     std::string displayName;
     std::string name;
