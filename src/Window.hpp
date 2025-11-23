@@ -16,12 +16,12 @@ class Window {
     int mouse_y = 0;
 
 
-    Canvas cookieCanvas = ftxui::Canvas(100, 100);
+    Canvas cookieCanvas = Canvas(100, 100);
     Game *game = nullptr;
-    ScreenInteractive screen;
-
 
 public:
+    ScreenInteractive screen;
+
     explicit Window(Game *game);
     void render();
 

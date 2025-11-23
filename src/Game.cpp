@@ -26,11 +26,11 @@ void Game::update() {
     cookieMutex.unlock();
 }
 
-void Game::initCookie() {
+void Game::initCookie(ScreenInteractive& screen) {
     Buildings.push_back(Cursor());
     Buildings.push_back(Factory());
 
-    cookieThread = std::thread(&Game::gameLoop, this);
+    cookieThread = std::thread(&Game::gameLoop, this, std::ref(screen));
 
 }
 
@@ -43,26 +43,26 @@ void Game::click() {
     progress += 0.1f/levelDifficulty * progressMultiplier;
 
 
-    cookieProgress += clickPower;
-    cookies += static_cast<int>(cookieProgress);
-    allTimeCookies += static_cast<int>(cookieProgress);
-    cookieProgress -= static_cast<int>(cookieProgress);
+    cookies += clickPower;
+    allTimeCookies += clickPower;
 }
 
-void Game::gameLoop() {
-    if (!running) return;
-    using namespace std::chrono_literals;
+void Game::gameLoop(ScreenInteractive &screen) {
+    double lastCookieCount = 0;
+    while (running) {
+        using namespace std::chrono_literals;
+        const auto start = std::chrono::high_resolution_clock::now();
+        std::this_thread::sleep_for(2000ms);
+        cookieMutex.lock();
+        cps = (allTimeCookies - lastCookieCount) / 2.0;
+        const auto end = std::chrono::high_resolution_clock::now();
+        const std::chrono::duration<double, std::milli> deltaTime = end - start;
 
-    const auto start = std::chrono::high_resolution_clock::now();
-    std::this_thread::sleep_for(2000ms);
-    cookieMutex.lock();
-    const auto end = std::chrono::high_resolution_clock::now();
-    const std::chrono::duration<double, std::milli> deltaTime = end - start;
-
-    cookieProgress += autoClick * (deltaTime.count() / 1000.0);
-    int deltaCookies = static_cast<int>(cookieProgress);
-    cookies += deltaCookies;
-    allTimeCookies += deltaCookies;
-    cookieProgress -= deltaCookies;
-    cookieMutex.unlock();
+        double deltaCookies = autoClick * (deltaTime.count() / 1000.0);
+        cookies += deltaCookies;
+        allTimeCookies += deltaCookies;
+        lastCookieCount = allTimeCookies;
+        cookieMutex.unlock();
+        screen.PostEvent(Event::Custom);
+    }
 }

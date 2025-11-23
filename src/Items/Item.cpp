@@ -27,10 +27,12 @@ void Item::drawFromPNG(const std::string& filename) {
 
 Item::Item(const std::string& name, int baseCost, double cps, double clickPower):name(name),baseCost(baseCost), cps(cps), clickPower(clickPower)
 {
+    selected = new bool(false);
     drawFromPNG("assets/"+name+".png");
     displayName = name;
     description = "No description available.";
 }
+
 
 void Item::setDisplayName(const std::string& name) {
     displayName = name;

@@ -8,11 +8,12 @@
 #include <mutex>
 #include <thread>
 #include <vector>
+#include <ftxui/component/screen_interactive.hpp>
 
 #include "Items/Item.hpp"
 
 class Game {
-    void gameLoop();
+    void gameLoop(ScreenInteractive &screen);
 
 public:
     bool running = true;
@@ -20,9 +21,8 @@ public:
     std::thread cookieThread;
     std::mutex cookieMutex;
 
-    int cookies = 0;
-    int allTimeCookies = 0;
-    double cookieProgress = 0.0;
+    double cookies = 0;
+    double allTimeCookies = 0;
 
 
     double cps = 0.0;
@@ -39,7 +39,7 @@ public:
 
     void update();
     void click();
-    void initCookie();
+    void initCookie(ScreenInteractive& screen);
 
     ~Game() {
         running = false;

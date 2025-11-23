@@ -2,10 +2,8 @@
 // Created by root on 11/18/25.
 //
 
-#include "../Items/Sword.hpp"
 #include <ftxui/screen/screen.hpp>
 #include <ftxui/dom/elements.hpp>
-#include <iostream>
 
 #include "../Items/Cursor.hpp"
 

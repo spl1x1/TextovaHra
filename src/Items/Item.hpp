@@ -24,6 +24,8 @@ public:
 
     std::string description;
 
+    bool *selected;
+
     Item(const std::string& name, int baseCost, double cps, double clickPower);
     void setDisplayName(const std::string& name);
     void setDescription(const std::string& desc);
