@@ -8,6 +8,7 @@
 
 #include "Items/Cursor.hpp"
 #include "Items/Factory.hpp"
+#include "Items/ReinforcedFinger.hpp"
 
 void Game::update() {
     cookieMutex.lock();
@@ -32,6 +33,8 @@ void Game::initCookie(ScreenInteractive* screen) {
 
     Buildings.push_back(Cursor());
     Buildings.push_back(Factory());
+
+    Upgrades.push_back(ReinforcedFinger());
 
     Achievements.push_back(TestA());
 
