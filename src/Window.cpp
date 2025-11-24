@@ -99,14 +99,10 @@ void Window::render() {
 
     auto AchievementComponent = [&](const Achievement &achievement) -> Component {
             return Renderer([&] {
-                auto box = hbox(
-                    text(achievement.displayName) | center,
-                    text(achievement.description) | center
-                    ) | border;
                 if (!achievement.achieved) {
-                    return box | color(Color::Red) | dim ;
+                    return text(achievement.description) | center | border | color(Color::Red) | dim ;
                 }
-                return box | color(Color::Green) ;
+                return text(achievement.description) | center | border | color(Color::Green) ;
             });
     };
 

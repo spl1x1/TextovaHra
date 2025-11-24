@@ -13,20 +13,18 @@ class Achievement {
 public:
     virtual ~Achievement() = default;
 
-    std::string displayName;
-    std::string name;
     std::string description;
     bool achieved = false;
 
     int goal = 0;
 
-    Achievement(const std::string& name, const std::string& description, std::string  displayName = "");
+    Achievement(const std::string& description, const int goal) : description(description), goal(goal) {};
     void check(Game *game);
 };
 
 class TestA : public Achievement {
     public:
-    TestA() : Achievement("Test Achievement", "This is a test achievement.", "Test Achievement") {
+    TestA() : Achievement("Get 10 Cookies.", 10) {
         goal = 10;
     }
 };
