@@ -8,7 +8,7 @@ int main() {
     Window window(game);
 
     std::cin.get();
-    game->initCookie();
+    game->initCookie(&window.screen);
 
     window.render();
     window.quit();

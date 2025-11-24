@@ -6,12 +6,15 @@ set(CMAKE_CXX_STANDARD 14)
 
 file(GLOB SOURCES "src/*.cpp" "src/*.hpp")
 file(GLOB ITEMS "src/Items/*.cpp" "src/Items/*.hpp")
+file(GLOB ACHIEVEMENTS "src/Achievements/*.cpp" "src/Achievements/*.hpp")
 
 
 
 add_executable(TextovaHra
         ${SOURCES}
-        ${ITEMS})
+        ${ITEMS}
+        ${ACHIEVEMENTS}
+)
 
 add_executable(ItemTest
         ${ITEMS})

@@ -9,7 +9,7 @@
 
 class Factory : public Item{
 public:
-    Factory():Item("Factory", 1000, 8.0, 0.0) {};
+    Factory():Item("Factory", 1000, 8.0, 0.0, 2) {};
 };
 
 
