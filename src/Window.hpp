@@ -7,6 +7,7 @@
 
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/canvas.hpp>
+#include <ftxui/dom/elements.hpp>
 
 
 #include "Game.hpp"
@@ -21,6 +22,7 @@ class Window {
 
 public:
     ScreenInteractive screen;
+    std::vector<Element> output;
 
     explicit Window(Game *game);
     void render();

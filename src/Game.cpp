@@ -4,6 +4,8 @@
 
 #include "Game.hpp"
 
+#include <ftxui/dom/elements.hpp>
+
 #include "Items/Cursor.hpp"
 #include "Items/Factory.hpp"
 
@@ -26,10 +28,14 @@ void Game::update() {
     cookieMutex.unlock();
 }
 
-void Game::initCookie(ScreenInteractive& screen) {
+void Game::initCookie(ScreenInteractive* screen) {
+
     Buildings.push_back(Cursor());
     Buildings.push_back(Factory());
-    this->screen = &screen;
+
+    Achievements.push_back(TestA());
+
+    this->screen = screen;
 
     cookieThread = std::thread(&Game::gameLoop, this);
 
@@ -63,6 +69,11 @@ void Game::gameLoop() {
         cookies += deltaCookies;
         allTimeCookies += deltaCookies;
         lastCookieCount = allTimeCookies;
+
+        for (auto &achievement : Achievements) {
+            achievement.check(this);
+        }
+
         screen->PostEvent(Event::Custom);
         cookieMutex.unlock();
     }

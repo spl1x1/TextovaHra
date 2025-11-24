@@ -9,6 +9,8 @@
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/elements.hpp>
 
+#include "Achievements/Achievement.hpp"
+
 
 using namespace ftxui;
 
@@ -95,16 +97,44 @@ void Window::render() {
         return components;
     };
 
+    auto AchievementComponent = [&](const Achievement &achievement) -> Component {
+            return Renderer([&] {
+                auto box = hbox(
+                    text(achievement.displayName) | center,
+                    text(achievement.description) | center
+                    ) | border;
+                if (!achievement.achieved) {
+                    return box | color(Color::Red) | dim ;
+                }
+                return box | color(Color::Green) ;
+            });
+    };
+
+
+    auto achievementComponents = [&](std::vector<Achievement>& achievementList) -> Components {;
+        auto components = Components();
+        for (auto &i : achievementList) {
+            components.push_back(AchievementComponent(i));
+        }
+        components.push_back(
+            Renderer([&] {
+                return vbox(output);
+            }));
+        return components;
+    };
+
     int tab_selected = 0;
 
     std::vector<std::string> tab_names = {
         "Buildings",
-        "Upgrades"
+        "Upgrades",
+        "Achievements"
     };
 
     auto buttons = Container::Tab({
         Container::Vertical(itemComponents(game->Buildings)),
         Container::Vertical(itemComponents(game->Upgrades)),
+        Container::Vertical(achievementComponents(game->Achievements))
     } , &tab_selected) | xflex;
 
     auto store = Container::Vertical({

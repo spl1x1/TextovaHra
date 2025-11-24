@@ -5,9 +5,9 @@
 #ifndef ACHIEVEMENT_HPP
 #define ACHIEVEMENT_HPP
 #include <string>
-#include "../Game.hpp"
-#include <ftxui/dom/canvas.hpp>
 
+
+class Game;
 
 class Achievement {
 public:
@@ -17,10 +17,18 @@ public:
     std::string name;
     std::string description;
     bool achieved = false;
-    Canvas achievementCanvas;
 
-    Achievement(const std::string& name, const std::string& description, const std::string& displayName = "");
-    virtual void check(const Game &game){};
+    int goal = 0;
+
+    Achievement(const std::string& name, const std::string& description, std::string  displayName = "");
+    void check(Game *game);
+};
+
+class TestA : public Achievement {
+    public:
+    TestA() : Achievement("Test Achievement", "This is a test achievement.", "Test Achievement") {
+        goal = 10;
+    }
 };
 
 

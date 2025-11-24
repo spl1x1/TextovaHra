@@ -5,11 +5,15 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+
 #include <mutex>
 #include <thread>
 #include <vector>
 #include <ftxui/component/screen_interactive.hpp>
+#include <ftxui/dom/elements.hpp>
 
+
+#include "Achievements/Achievement.hpp"
 #include "Items/Item.hpp"
 
 class Game {
@@ -25,7 +29,6 @@ public:
     double cookies = 0;
     double allTimeCookies = 0;
 
-
     double cps = 0.0;
     double clickPower = 1.0;
     double autoClick = 0.0;
@@ -37,10 +40,11 @@ public:
 
     std::vector<Item> Buildings;
     std::vector<Item> Upgrades;
+    std::vector<Achievement> Achievements;
 
     void update();
     void click();
-    void initCookie(ScreenInteractive& screen);
+    void initCookie(ScreenInteractive* screen);
 
     ~Game() {
         running = false;
