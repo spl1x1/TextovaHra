@@ -8,6 +8,9 @@
 
 #include "Items/Cursor.hpp"
 #include "Items/Factory.hpp"
+#include "Items/ReinforcedFinger.hpp"
+#include "Items/Grandma.hpp"
+#include "Items/portal.hpp"
 #include "Items/FingerUpgrades.hpp"
 
 void Game::update() {
@@ -34,35 +37,34 @@ void Game::initCookie(ScreenInteractive* screen) {
     Buildings.push_back(Cursor());
     Buildings.push_back(Factory());
 
-
     Upgrades.push_back(ReinforcedFinger());
-    Upgrades.push_back(Ambidextrous());
-    Upgrades.push_back(ThousandFingers());
-    Upgrades.push_back(MillionFingers());
-    Upgrades.push_back(BillionFingers());
 
-
-    for (int i = 100; i <= 1000000; i *= 10) {
-        Achievements.push_back(Achievement::CookieMilestone(i));
-    }
-
-    for (int i = 10000; i <= 1000000; i *= 10) {
-        Achievements.push_back(Achievement::CookiesInBankMilestone(i));
-    }
-
-    for (int i = 10; i <= 100; i *= 10) {
-        Achievements.push_back(Achievement::CPSMilestone(i));
-    }
-
-    for (int i = 10; i <= 100; i *= 10) {
-        Achievements.push_back(Achievement::CPMilestone(i));
-    }
+    Achievements.push_back(Achievement::CookieMilestone(100));
+    Achievements.push_back(Achievement::CookieMilestone(1000));
+    Achievements.push_back(Achievement::CookieMilestone(10000));
+    Achievements.push_back(Achievement::CookieMilestone(100000));
+    Achievements.push_back(Achievement::CookieMilestone(1000000));
 
     Achievements.push_back(Achievement::LevelMilestone(2));
     Achievements.push_back(Achievement::LevelMilestone(10));
     Achievements.push_back(Achievement::LevelMilestone(50));
     Achievements.push_back(Achievement::LevelMilestone(100));
     Achievements.push_back(Achievement::LevelMilestone(500));
+
+    Achievements.push_back(Achievement::CookiesInBankMilestone(10000));
+    Achievements.push_back(Achievement::CookiesInBankMilestone(100000));
+    Achievements.push_back(Achievement::CookiesInBankMilestone(1000000));
+
+    Achievements.push_back(Achievement::CPSMilestone(10));
+    Achievements.push_back(Achievement::CPSMilestone(100));
+    Achievements.push_back(Achievement::CPSMilestone(1000));
+
+
+    Achievements.push_back(Achievement::CPMilestone(10));
+    Achievements.push_back(Achievement::CPMilestone(100));
+    Achievements.push_back(Achievement::CPMilestone(1000));
+
+
 
 
     this->screen = screen;
