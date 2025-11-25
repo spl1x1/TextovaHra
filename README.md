@@ -6,7 +6,7 @@ Moderní implementace populární hry Cookie Clicker v C++ s interaktivním text
 
 Toto je klonování hry Cookie Clicker napsané v C++. Hra běží v terminálu s grafickým rozhraním postaveným na knihovně FTXUI, která umožňuje tvorbu pokročilých textových uživatelských rozhraní.
 
-![Game Screenshot](./assets/screenshot.png)
+![Game Screenshot](./assets/screenshot.jpg)
 
 ## ✨ Funkcionalita
 
@@ -29,4 +29,5 @@ Toto je klonování hry Cookie Clicker napsané v C++. Hra běží v terminálu 
 mkdir -p build 
 cd build
 cmake build -S .. -B .
+
 make
