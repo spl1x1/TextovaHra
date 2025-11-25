@@ -126,10 +126,6 @@ void Window::render() {
         components.push_back(Container::Horizontal(std::move(buttons)) | flex);
         components.push_back(Container::Tab(std::move(itemTabs), selectedItemPage));
         components.push_back(std::move(buyButton(itemList)));
-        components.push_back(
-            Renderer([&] {
-                return vbox(output);
-            }));
         return components;
     };
 
@@ -213,9 +209,12 @@ void Window::render() {
         text("Auto Click: " + std::to_string(game->autoClick) + " cookies/seconds") | center
         ) | border; }),
         Button("Exit", [&] {
-    game->running = false;
-    screen.ExitLoopClosure()();
-    }) | xflex
+            game->running = false;
+            screen.ExitLoopClosure()();
+        }) | xflex,
+        Renderer([&] {
+            return vbox(output);
+        })
     });
 
     auto cookie_renderer = Renderer([&] {
