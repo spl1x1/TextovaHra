@@ -3,9 +3,11 @@
 #include "Item.hpp"
 
 
-class Factory : public Item{
+class Factory : public Item {
 public:
-    Factory():Item("Factory", 1200, 8.0, 0.0, 10) {};
+    Factory():Item("Factory", 1200, 8.0, 0.0, 10) {
+        setDisplayName("Cookie Factory");
+    }
 };
 
 
