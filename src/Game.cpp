@@ -8,6 +8,7 @@
 
 #include "Items/Cursor.hpp"
 #include "Items/Factory.hpp"
+#include "Items/Farm.hpp"
 #include "Items/Grandma.hpp"
 #include "Items/portal.hpp"
 #include "Items/FingerUpgrades.hpp"
@@ -34,8 +35,9 @@ void Game::update() {
 void Game::initCookie(ScreenInteractive* screen) {
 
     Buildings.push_back(Cursor());
-    Buildings.push_back(Factory());
     Buildings.push_back(Grandma());
+    Buildings.push_back(Farm());
+    Buildings.push_back(Factory());
     Buildings.push_back(portal());
 
     Upgrades.push_back(ReinforcedFinger());

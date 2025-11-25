@@ -5,8 +5,8 @@
 
 class Factory : public Item {
 public:
-    Factory():Item("Factory", 1200, 8.0, 0.0, 10) {
-        setDisplayName("Cookie Factory");
+    Factory():Item("Factory", 3000, 15.0, 0.0, 10) {
+        setDisplayName("Factory");
     }
 };
 

@@ -232,6 +232,7 @@ void Window::render() {
         game->click();
         return true;
     });
+    game->cookieMutex.unlock();
 
     auto gameComponent = Container::Horizontal({
         cookiePanel |  size(WIDTH, EQUAL, 40),
@@ -239,10 +240,16 @@ void Window::render() {
         store |  size(WIDTH, EQUAL, 40)
     });
 
+    //Mutex lockování při renderu, snad zamenzí freezu
+    auto finalComponent = Renderer(
+        gameComponent, [&] {
+            game->cookieMutex.lock();
+            auto element = gameComponent->Render();
+            game->cookieMutex.unlock();
+            return element;
+        });
 
-    game->cookieMutex.unlock();
-    screen.Loop(gameComponent);
-
+    screen.Loop(finalComponent);
 }
 
 Window::Window(Game *game) : screen(ftxui::ScreenInteractive::FixedSize(140,25)) {
