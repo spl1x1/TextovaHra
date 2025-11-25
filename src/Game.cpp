@@ -8,7 +8,7 @@
 
 #include "Items/Cursor.hpp"
 #include "Items/Factory.hpp"
-#include "Items/ReinforcedFinger.hpp"
+#include "Items/FingerUpgrades.hpp"
 
 void Game::update() {
     cookieMutex.lock();
@@ -36,6 +36,10 @@ void Game::initCookie(ScreenInteractive* screen) {
 
 
     Upgrades.push_back(ReinforcedFinger());
+    Upgrades.push_back(Ambidextrous());
+    Upgrades.push_back(ThousandFingers());
+    Upgrades.push_back(MillionFingers());
+    Upgrades.push_back(BillionFingers());
 
 
     for (int i = 100; i <= 1000000; i *= 10) {

@@ -16,6 +16,10 @@ class Window {
     int mouse_x = 0;
     int mouse_y = 0;
 
+    enum StoreType {
+        BUILDINGS,
+        UPGRADES
+    };
 
     Canvas cookieCanvas = Canvas(100, 100);
     Game *game = nullptr;

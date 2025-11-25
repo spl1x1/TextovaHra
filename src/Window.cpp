@@ -37,7 +37,7 @@ void Window::render() {
     // Store
     auto ItemComponent = [&](const Item &item) -> Component {
         return Container::Horizontal({
-            Checkbox( item.name, item.selected) | center,
+            Checkbox( item.displayName, item.selected) | center,
             Renderer([&] {
                 auto itemText = vbox(
                     text(" Cost: " + std::to_string(item.baseCost * (item.amount+1))) | center,
@@ -84,14 +84,21 @@ void Window::render() {
         });
     };
 
-    int selectedItemPage = 0;
+    int buildingsItemPage = 0;
+    int upgradesItemPage = 0;
 
-    auto itemComponents = [&](std::vector<Item>& itemList) -> Components {
-        ;
+
+    auto itemComponents = [&](std::vector<Item>& itemList, StoreType type) -> Components {
         auto components = Components();
         auto buttons = Components();
         auto itemTabs = Components();
-        int pageItems = 3;
+        int pageItems = 2;
+        int *selectedItemPage = &buildingsItemPage;
+
+        if (type == UPGRADES) {
+            selectedItemPage = &upgradesItemPage;
+        }
+
 
         int pageCount = std::ceil(static_cast<double>(itemList.size()) / pageItems);
 
@@ -101,8 +108,8 @@ void Window::render() {
                 itemList.begin() + std::min(static_cast<size_t>((page + 1) * pageItems), itemList.size())
             );
             buttons.push_back(
-                Button(std::to_string(page + 1), [&selectedItemPage, page] {
-                    selectedItemPage = page;
+                Button(std::to_string(page + 1), [selectedItemPage, page] {
+                    *selectedItemPage = page;
                 })
             );
 
@@ -117,7 +124,7 @@ void Window::render() {
         }
 
         components.push_back(Container::Horizontal(std::move(buttons)) | flex);
-        components.push_back(Container::Tab(std::move(itemTabs), &selectedItemPage));
+        components.push_back(Container::Tab(std::move(itemTabs), selectedItemPage));
         components.push_back(std::move(buyButton(itemList)));
         components.push_back(
             Renderer([&] {
@@ -183,8 +190,8 @@ void Window::render() {
     };
 
     auto buttons = Container::Tab({
-        Container::Vertical(itemComponents(game->Buildings)),
-        Container::Vertical(itemComponents(game->Upgrades)),
+        Container::Vertical(itemComponents(game->Buildings, BUILDINGS)),
+        Container::Vertical(itemComponents(game->Upgrades, UPGRADES)),
         Container::Vertical(achievementComponents(game->Achievements))
     } , &tab_selected) | xflex;
 
