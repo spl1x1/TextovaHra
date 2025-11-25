@@ -18,17 +18,25 @@ Toto je klonování hry Cookie Clicker napsané v C++. Hra běží v terminálu 
 
 ## 🛠️ Požadavky
 
+### Systémové požadavky
+- **Unix-based systém** (Linux, macOS) nebo **Docker kontejner**
 - C++17 nebo vyšší
 - CMake 3.16+
+- Ninja build system
 - FTXUI knihovna
 - STB Image (včleněna v projektu)
 
+> ⚠️ **Důležité**: Projekt je optimalizován pro unixové systémy. Na Windows se doporučuje použít Docker kontejner nebo WSL2.
+
 ## 🚀 Kompilace
+
+Projekt lze zkompilovat **pouze** pomocí následujících příkazů:
 
 ```bash
 mkdir -p build 
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -G Ninja -S .. -B .
 cmake --build . --config Release --target all -- -j4
+
 
 
