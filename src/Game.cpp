@@ -8,7 +8,6 @@
 
 #include "Items/Cursor.hpp"
 #include "Items/Factory.hpp"
-#include "Items/ReinforcedFinger.hpp"
 #include "Items/Grandma.hpp"
 #include "Items/portal.hpp"
 #include "Items/FingerUpgrades.hpp"
