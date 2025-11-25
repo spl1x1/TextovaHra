@@ -1,14 +1,11 @@
-//
-// Created by Lukáš Kaplánek on 20.11.2025.
-//
-
 #ifndef GRANDMA_HPP
 #define GRANDMA_HPP
+#include "Item.hpp"
 
 
-
-class Grandma {
-
+class Grandma : public Item {
+public:
+    grandma():Item("grandma", 500, 5.0, 0.0, 5) {};
 };
 
 

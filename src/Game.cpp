@@ -9,6 +9,8 @@
 #include "Items/Cursor.hpp"
 #include "Items/Factory.hpp"
 #include "Items/ReinforcedFinger.hpp"
+#include "Items/Grandma.hpp"
+#include "Items/portal.hpp"
 
 void Game::update() {
     cookieMutex.lock();

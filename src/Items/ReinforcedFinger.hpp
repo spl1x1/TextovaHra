@@ -1,6 +1,4 @@
-//
-// Created by Lukáš Kaplánek on 20.11.2025.
-//
+
 #ifndef REINFORCEDFINGER_HPP
 #define REINFORCEDFINGER_HPP
 #include "Item.hpp"
