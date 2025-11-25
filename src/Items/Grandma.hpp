@@ -6,6 +6,7 @@
 class Grandma : public Item {
 public:
     grandma():Item("grandma", 500, 5.0, 0.0, 5) {};
+    setDisplayName("Baking grandma");
 };
 
 
