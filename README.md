@@ -13,8 +13,8 @@ Toto je klonování hry Cookie Clicker napsané v C++. Hra běží v terminálu 
 - *🖱️ Klikání na cookies* - Získávej cookies klikáním myší na hlavní cookie
 - *🏢 Nákup budov* - Automatizuj produkci cookies nákupem různých budov (Babička, Farma, Továrna...)
 - *⬆️ Upgrades* - Vylepšuj budovy a zvyšuj jejich efektivitu a výnos
--*🖼️ PNG grafika** - Podpora PNG obrázků pro vizuální prvky hry
--*📊 Statistiky** - Sleduj svůj pokrok a výnosy
+- *🖼️ PNG grafika** - Podpora PNG obrázků pro vizuální prvky hry
+- *📊 Statistiky** - Sleduj svůj pokrok a výnosy
 
 ## 🛠️ Požadavky
 
