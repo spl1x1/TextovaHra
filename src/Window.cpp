@@ -217,19 +217,27 @@ void Window::render() {
         })
     });
 
+    bool clicked = false;
+
     auto cookie_renderer = Renderer([&] {
-        return canvas(cookieCanvas) | center | border | notflex;
+        auto c = canvas(cookieCanvas) | center | border | notflex;
+        if (clicked) {
+            return c | color(Color::Cyan);
+        }
+        return c;
     });
 
 
     auto mouseEvent = CatchEvent(cookie_renderer, [&](Event event)-> bool {
+        clicked = false;
         mouse_x = event.mouse().x;
         mouse_y = event.mouse().y;
         if (!event.is_mouse()) return false;
-        if (event.mouse().button != Mouse::Left || event.mouse().motion > 0)return false;
+        if (event.mouse().button != Mouse::Left || event.mouse().motion > 0) return false;
         if (event.mouse().x < 60 || event.mouse().x > 80) return false;
         if (event.mouse().y < 8 || event.mouse().y > 19) return false;
         game->click();
+        clicked = true;
         return true;
     });
     game->cookieMutex.unlock();
@@ -239,6 +247,7 @@ void Window::render() {
         mouseEvent |  size(WIDTH, EQUAL, 60),
         store |  size(WIDTH, EQUAL, 40)
     });
+
 
     //Mutex lockování při renderu, snad zamenzí freezu
     auto finalComponent = Renderer(
