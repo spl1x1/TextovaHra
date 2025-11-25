@@ -7,36 +7,36 @@
 
 class ReinforcedFinger:public Item{
 public:
-    ReinforcedFinger():Item("Cursor",100,0.0,1.0,1) {
-        setDisplayName("Reinforced Finger");
+    ReinforcedFinger():Item("Second",100,0.0,1.0,1) {
+        setDisplayName("Second");
     };
 };
 
 class Ambidextrous:public Item{
 public:
-    Ambidextrous():Item("Cursor",500,0.0,2.0,2) {
-        setDisplayName("Ambidextrous");
+    Ambidextrous():Item("Hardened",500,0.0,2.0,2) {
+        setDisplayName("Hardened");
     };
 };
 
 class ThousandFingers:public Item{
 public:
-    ThousandFingers():Item("Cursor",10000,0.0,5.0,3) {
-        setDisplayName("Thousand Fingers");
+    ThousandFingers():Item("Thousand",10000,0.0,5.0,3) {
+        setDisplayName("Thousand");
     };
 };
 
 class MillionFingers:public Item{
 public:
-    MillionFingers():Item("Cursor",100000,0.0,10.0,4) {
-        setDisplayName("Million Fingers");
+    MillionFingers():Item("Million",100000,0.0,10.0,4) {
+        setDisplayName("Million");
     };
 };
 
 class BillionFingers:public Item{
 public:
-    BillionFingers():Item("Cursor",1000000,0.0,50.0,5) {
-        setDisplayName("Billion Fingers");
+    BillionFingers():Item("Billion",1000000,0.0,50.0,5) {
+        setDisplayName("Billion");
     };
 };
 
