@@ -28,6 +28,5 @@ Toto je klonování hry Cookie Clicker napsané v C++. Hra běží v terminálu 
 ```bash
 mkdir -p build 
 cd build
-cmake build -S .. -B .
+cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -G Ninja -S .. -B .
 
-make
