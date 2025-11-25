@@ -5,40 +5,40 @@
 #include "Window.hpp"
 
 #include <iomanip>
+#include <cmath>
 #include <ftxui/component/component.hpp>
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/elements.hpp>
 
 #include "Achievements/Achievement.hpp"
 
-
 using namespace ftxui;
 
-void Window::quit() {
+void Window::quit()
+{
     system("clear");
 
     auto exitScreen = vbox(
-    text("Děkujeme za hraní ultimátního cookie clickeru!") | center | bold | color(Color::Blue) ,
-    text("Váš celkový počet cookies: " + std::to_string(static_cast<int>(game->allTimeCookies))) | center,
-    canvas(cookieCanvas) | center
-) | border;
-
+                          text("Děkujeme za hraní ultimátního cookie clickeru!") | center | bold | color(Color::Blue),
+                          text("Váš celkový počet cookies: " + std::to_string(static_cast<int>(game->allTimeCookies))) | center,
+                          canvas(cookieCanvas) | center) |
+                      border;
 
     Render(screen, exitScreen);
     screen.Print();
-
 }
 
-
-void Window::render() {
+void Window::render()
+{
     game->cookieMutex.lock();
 
-
     // Store
-    auto ItemComponent = [&](const Item &item) -> Component {
+    auto ItemComponent = [&](const Item &item) -> Component
+    {
         return Container::Horizontal({
-            Checkbox( item.displayName, item.selected) | center,
-            Renderer([&] {
+                   Checkbox(item.displayName, item.selected) | center,
+                   Renderer([&]
+                            {
                 auto itemText = vbox(
                     text(" Cost: " + std::to_string(item.baseCost * (item.amount+1))) | center,
                     text (" Amount: " + std::to_string(item.amount)) | center,
@@ -56,14 +56,17 @@ void Window::render() {
                 if (game->cookies < item.baseCost * (item.amount + 1)) {
                     return box | color(Color::Yellow) | dim ;
                 }
-                return box | color(Color::Green) ;
-            }) | center ,
-        }) | border | xflex;
+                return box | color(Color::Green) ; }) |
+                       center,
+               }) |
+               border | xflex;
     };
 
     std::vector<Element> output;
-    auto buyButton =[&] (std::vector<Item>& itemList)->Component {
-        return Button("Buy", [&] {
+    auto buyButton = [&](std::vector<Item> &itemList) -> Component
+    {
+        return Button("Buy", [&]
+                      {
             output.clear();
             for (auto &item : itemList) {
                 if (*item.selected) {
@@ -80,47 +83,44 @@ void Window::render() {
                 game->update();
                 output.push_back(text("Bought 1 " + item.name + "!") | color(Color::Green) | center);
                 }
-            }
-        });
+            } });
     };
 
     int buildingsItemPage = 0;
     int upgradesItemPage = 0;
 
-
-    auto itemComponents = [&](std::vector<Item>& itemList, StoreType type) -> Components {
+    auto itemComponents = [&](std::vector<Item> &itemList, StoreType type) -> Components
+    {
         auto components = Components();
         auto buttons = Components();
         auto itemTabs = Components();
         int pageItems = 2;
         int *selectedItemPage = &buildingsItemPage;
 
-        if (type == UPGRADES) {
+        if (type == UPGRADES)
+        {
             selectedItemPage = &upgradesItemPage;
         }
 
-
         int pageCount = std::ceil(static_cast<double>(itemList.size()) / pageItems);
 
-        for (int page = 0; page < pageCount; page++) {
+        for (int page = 0; page < pageCount; page++)
+        {
             auto list = std::vector<Item>(
                 itemList.begin() + page * pageItems,
-                itemList.begin() + std::min(static_cast<size_t>((page + 1) * pageItems), itemList.size())
-            );
+                itemList.begin() + std::min(static_cast<size_t>((page + 1) * pageItems), itemList.size()));
             buttons.push_back(
-                Button(std::to_string(page + 1), [selectedItemPage, page] {
-                    *selectedItemPage = page;
-                })
-            );
+                Button(std::to_string(page + 1), [selectedItemPage, page]
+                       { *selectedItemPage = page; }));
 
             auto pageComponents = Components();
-            for (size_t i = page * pageItems; i < std::min(static_cast<size_t>((page + 1) * pageItems), itemList.size()); ++i) {
+            for (size_t i = page * pageItems; i < std::min(static_cast<size_t>((page + 1) * pageItems), itemList.size()); ++i)
+            {
                 pageComponents.push_back(ItemComponent(itemList[i]));
             }
 
             itemTabs.push_back(
-                Container::Vertical(std::move(pageComponents))
-            );
+                Container::Vertical(std::move(pageComponents)));
         }
 
         components.push_back(Container::Horizontal(std::move(buttons)) | flex);
@@ -129,44 +129,43 @@ void Window::render() {
         return components;
     };
 
-
-    auto AchievementComponent = [&](const Achievement &achievement) -> Component {
-            return Renderer([&] {
+    auto AchievementComponent = [&](const Achievement &achievement) -> Component
+    {
+        return Renderer([&]
+                        {
                 if (!achievement.achieved) {
                     return text(achievement.description) | center | border | color(Color::Red) | dim ;
                 }
-                return text(achievement.description) | center | border | color(Color::Green) ;
-            });
+                return text(achievement.description) | center | border | color(Color::Green) ; });
     };
 
     int selectedAchievementPage = 0;
 
-    auto achievementComponents = [&](std::vector<Achievement>& achievementList) -> Components {
+    auto achievementComponents = [&](std::vector<Achievement> &achievementList) -> Components
+    {
         int pageItems = 6;
         auto components = Components();
         auto buttons = Components();
 
         int pageCount = ceil(static_cast<double>(achievementList.size()) / pageItems);
 
-        for (int page = 0; page < pageCount; page++) {
+        for (int page = 0; page < pageCount; page++)
+        {
             auto list = std::vector<Achievement>(
                 achievementList.begin() + page * pageItems,
-                achievementList.begin() + std::min(static_cast<size_t>((page + 1) * pageItems), achievementList.size())
-            );
+                achievementList.begin() + std::min(static_cast<size_t>((page + 1) * pageItems), achievementList.size()));
             buttons.push_back(
-                Button(std::to_string(page + 1), [&selectedAchievementPage, page] {
-                    selectedAchievementPage = page;
-                })
-            );
+                Button(std::to_string(page + 1), [&selectedAchievementPage, page]
+                       { selectedAchievementPage = page; }));
 
             auto pageComponents = Components();
-            for (size_t i = page * pageItems; i < std::min(static_cast<size_t>((page + 1) * pageItems), achievementList.size()); ++i) {
+            for (size_t i = page * pageItems; i < std::min(static_cast<size_t>((page + 1) * pageItems), achievementList.size()); ++i)
+            {
                 pageComponents.push_back(AchievementComponent(achievementList[i]));
             }
 
             components.push_back(
-                Container::Vertical(std::move(pageComponents))
-            );
+                Container::Vertical(std::move(pageComponents)));
         }
 
         auto result = Components();
@@ -175,60 +174,54 @@ void Window::render() {
         return result;
     };
 
-
-
     int tab_selected = 0;
 
     std::vector<std::string> tab_names = {
         "Buildings",
         "Upgrades",
-        "Achievements"
-    };
+        "Achievements"};
 
-    auto buttons = Container::Tab({
-        Container::Vertical(itemComponents(game->Buildings, BUILDINGS)),
-        Container::Vertical(itemComponents(game->Upgrades, UPGRADES)),
-        Container::Vertical(achievementComponents(game->Achievements))
-    } , &tab_selected) | xflex;
+    auto buttons = Container::Tab({Container::Vertical(itemComponents(game->Buildings, BUILDINGS)),
+                                   Container::Vertical(itemComponents(game->Upgrades, UPGRADES)),
+                                   Container::Vertical(achievementComponents(game->Achievements))},
+                                  &tab_selected) |
+                   xflex;
 
-    auto store = Container::Vertical({
-        Toggle(tab_names, &tab_selected) | border,
-        buttons
-    });
-;
-    auto cookiePanel = Container::Vertical({
-        Renderer([&] { return vbox(
-        text("Ultimátní cookie clicker!") | center | bold | color(Color::Blue),
-        separator(),
-        text("Level: " + std::to_string(game->level)) | center,
-        border(gauge(game->progress)) | border | xflex,
-        text("Cookies: " + std::to_string(static_cast<int>(game->cookies))) | center,
-        text("All time cookies: " + std::to_string(static_cast<int>(game->allTimeCookies))) | center,
-        text("CPS: " + std::to_string(game->cps) + " cookies/second") | center,
-        text("Click Power: " + std::to_string(game->clickPower) + " cookies/click") | center,
-        text("Auto Click: " + std::to_string(game->autoClick) + " cookies/seconds") | center
-        ) | border; }),
-        Button("Exit", [&] {
+    auto store = Container::Vertical({Toggle(tab_names, &tab_selected) | border,
+                                      buttons});
+    ;
+    auto cookiePanel = Container::Vertical({Renderer([&]
+                                                     { return vbox(
+                                                                  text("Ultimátní cookie clicker!") | center | bold | color(Color::Blue),
+                                                                  separator(),
+                                                                  text("Level: " + std::to_string(game->level)) | center,
+                                                                  border(gauge(game->progress)) | border | xflex,
+                                                                  text("Cookies: " + std::to_string(static_cast<int>(game->cookies))) | center,
+                                                                  text("All time cookies: " + std::to_string(static_cast<int>(game->allTimeCookies))) | center,
+                                                                  text("CPS: " + std::to_string(game->cps) + " cookies/second") | center,
+                                                                  text("Click Power: " + std::to_string(game->clickPower) + " cookies/click") | center,
+                                                                  text("Auto Click: " + std::to_string(game->autoClick) + " cookies/seconds") | center) |
+                                                              border; }),
+                                            Button("Exit", [&]
+                                                   {
             game->running = false;
-            screen.ExitLoopClosure()();
-        }) | xflex,
-        Renderer([&] {
-            return vbox(output);
-        })
-    });
+            screen.ExitLoopClosure()(); }) |
+                                                xflex,
+                                            Renderer([&]
+                                                     { return vbox(output); })});
 
     bool clicked = false;
 
-    auto cookie_renderer = Renderer([&] {
+    auto cookie_renderer = Renderer([&]
+                                    {
         auto c = canvas(cookieCanvas) | center | border | notflex;
         if (clicked) {
             return c | color(Color::Cyan);
         }
-        return c;
-    });
+        return c; });
 
-
-    auto mouseEvent = CatchEvent(cookie_renderer, [&](Event event)-> bool {
+    auto mouseEvent = CatchEvent(cookie_renderer, [&](Event event) -> bool
+                                 {
         clicked = false;
         mouse_x = event.mouse().x;
         mouse_y = event.mouse().y;
@@ -238,30 +231,27 @@ void Window::render() {
         if (event.mouse().y < 8 || event.mouse().y > 19) return false;
         game->click();
         clicked = true;
-        return true;
-    });
+        return true; });
     game->cookieMutex.unlock();
 
-    auto gameComponent = Container::Horizontal({
-        cookiePanel |  size(WIDTH, EQUAL, 40),
-        mouseEvent |  size(WIDTH, EQUAL, 60),
-        store |  size(WIDTH, EQUAL, 40)
-    });
+    auto gameComponent = Container::Horizontal({cookiePanel | size(WIDTH, EQUAL, 40),
+                                                mouseEvent | size(WIDTH, EQUAL, 60),
+                                                store | size(WIDTH, EQUAL, 40)});
 
-
-    //Mutex lockování při renderu, snad zamenzí freezu
+    // Mutex lockování při renderu, snad zamenzí freezu
     auto finalComponent = Renderer(
-        gameComponent, [&] {
+        gameComponent, [&]
+        {
             game->cookieMutex.lock();
             auto element = gameComponent->Render();
             game->cookieMutex.unlock();
-            return element;
-        });
+            return element; });
 
     screen.Loop(finalComponent);
 }
 
-Window::Window(Game *game) : screen(ftxui::ScreenInteractive::FixedSize(140,25)) {
+Window::Window(Game *game) : screen(ftxui::ScreenInteractive::FixedSize(140, 25))
+{
     this->game = game;
     // Hlavní tělo cookie (vnější kruh)
     cookieCanvas.DrawPointCircle(50, 50, 20, Color::RGB(210, 180, 140));
@@ -278,12 +268,10 @@ Window::Window(Game *game) : screen(ftxui::ScreenInteractive::FixedSize(140,25))
     cookieCanvas.DrawPointCircle(50, 50, 20, Color::RGB(160, 130, 90));
 
     auto splashScreen = vbox(
-        text("Vítej v ultimátním cookie clickeru!") | center | bold | color(Color::Blue) ,
-        text("Press any key to start...") | center,
-        canvas(cookieCanvas) | center
-    ) | border;
-
-
+                            text("Vítej v ultimátním cookie clickeru!") | center | bold | color(Color::Blue),
+                            text("Press any key to start...") | center,
+                            canvas(cookieCanvas) | center) |
+                        border;
 
     Render(screen, splashScreen);
 

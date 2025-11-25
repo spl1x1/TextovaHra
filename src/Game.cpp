@@ -5,6 +5,7 @@
 #include "Game.hpp"
 
 #include <ftxui/dom/elements.hpp>
+#include <cmath>
 
 #include "Items/Cursor.hpp"
 #include "Items/Factory.hpp"
@@ -13,18 +14,23 @@
 #include "Items/portal.hpp"
 #include "Items/FingerUpgrades.hpp"
 
-void Game::update() {
+void Game::update()
+{
     cookieMutex.lock();
     autoClick = 0.0;
     clickPower = 1.0;
-    for (const auto &item : Buildings) {
-        for (int i = 0; i < item.amount; i++) {
+    for (const auto &item : Buildings)
+    {
+        for (int i = 0; i < item.amount; i++)
+        {
             autoClick += item.cps;
             clickPower += item.clickPower;
         }
     }
-    for (const auto &item : Upgrades) {
-        for (int i = 0; i < item.amount; i++) {
+    for (const auto &item : Upgrades)
+    {
+        for (int i = 0; i < item.amount; i++)
+        {
             autoClick += item.cps;
             clickPower += item.clickPower;
         }
@@ -32,7 +38,8 @@ void Game::update() {
     cookieMutex.unlock();
 }
 
-void Game::initCookie(ScreenInteractive* screen) {
+void Game::initCookie(ScreenInteractive *screen)
+{
 
     Buildings.push_back(Cursor());
     Buildings.push_back(Grandma());
@@ -45,7 +52,6 @@ void Game::initCookie(ScreenInteractive* screen) {
     Upgrades.push_back(ThousandFingers());
     Upgrades.push_back(MillionFingers());
     Upgrades.push_back(BillionFingers());
-
 
     Achievements.push_back(Achievement::CookieMilestone(100));
     Achievements.push_back(Achievement::CookieMilestone(1000));
@@ -67,36 +73,34 @@ void Game::initCookie(ScreenInteractive* screen) {
     Achievements.push_back(Achievement::CPSMilestone(100));
     Achievements.push_back(Achievement::CPSMilestone(1000));
 
-
     Achievements.push_back(Achievement::CPMilestone(10));
     Achievements.push_back(Achievement::CPMilestone(100));
     Achievements.push_back(Achievement::CPMilestone(1000));
 
-
-
-
     this->screen = screen;
 
     cookieThread = std::thread(&Game::gameLoop, this);
-
 }
 
-void Game::click() {
-    if (progress >= 1.0) {
+void Game::click()
+{
+    if (progress >= 1.0)
+    {
         level += 1;
         progress = 0.0;
         levelDifficulty = exp(levelDifficulty);
     }
-    progress += 0.1f/levelDifficulty * progressMultiplier;
-
+    progress += 0.1f / levelDifficulty * progressMultiplier;
 
     cookies += clickPower;
     allTimeCookies += clickPower;
 }
 
-void Game::gameLoop() {
+void Game::gameLoop()
+{
     double lastCookieCount = 0;
-    while (running) {
+    while (running)
+    {
         using namespace std::chrono_literals;
         const auto start = std::chrono::high_resolution_clock::now();
         std::this_thread::sleep_for(2000ms);
@@ -110,7 +114,8 @@ void Game::gameLoop() {
         allTimeCookies += deltaCookies;
         lastCookieCount = allTimeCookies;
 
-        for (auto &achievement : Achievements) {
+        for (auto &achievement : Achievements)
+        {
             achievement.check(this);
         }
 
