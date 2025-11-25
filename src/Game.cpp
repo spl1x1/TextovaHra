@@ -35,8 +35,15 @@ void Game::initCookie(ScreenInteractive* screen) {
 
     Buildings.push_back(Cursor());
     Buildings.push_back(Factory());
+    Buildings.push_back(Grandma());
+    Buildings.push_back(portal());
 
     Upgrades.push_back(ReinforcedFinger());
+    Upgrades.push_back(Ambidextrous());
+    Upgrades.push_back(ThousandFingers());
+    Upgrades.push_back(MillionFingers());
+    Upgrades.push_back(BillionFingers());
+
 
     Achievements.push_back(Achievement::CookieMilestone(100));
     Achievements.push_back(Achievement::CookieMilestone(1000));
