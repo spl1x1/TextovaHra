@@ -20,6 +20,16 @@
                 "$gcc"
             ],
             "detail": "Kompiluje všechny .cpp soubory ve složce src do souboru 'game'."
+        },
+        {
+            "label": "CMake Build Release (Ninja)",
+            "type": "shell",
+            "command": "mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja -G Ninja -S .. -B . && cmake --build . --config Release --target all -- -j4",
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "Builds the project using CMake with Ninja generator in Release mode."
         }
     ]
 }
