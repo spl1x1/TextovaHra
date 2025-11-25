@@ -1,24 +1,16 @@
 cmake_minimum_required(VERSION 3.10)
-
 project(TextovaHra)
-
 set(CMAKE_CXX_STANDARD 14)
 
 file(GLOB SOURCES "src/*.cpp" "src/*.hpp")
 file(GLOB ITEMS "src/Items/*.cpp" "src/Items/*.hpp")
 file(GLOB ACHIEVEMENTS "src/Achievements/*.cpp" "src/Achievements/*.hpp")
 
-
-
 add_executable(TextovaHra
         ${SOURCES}
         ${ITEMS}
         ${ACHIEVEMENTS}
 )
-
-add_executable(ItemTest
-        ${ITEMS})
-
 
 include(cmake/CPM.cmake)
 find_package(Threads REQUIRED)
@@ -31,11 +23,6 @@ target_link_libraries(TextovaHra
         Threads::Threads
 )
 
-target_link_libraries(ItemTest
-        ftxui::dom
-        ftxui::screen
-)
-
 add_custom_target(copy_assets ALL
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${CMAKE_CURRENT_SOURCE_DIR}/assets"
@@ -43,6 +30,3 @@ add_custom_target(copy_assets ALL
         COMMENT "Copying assets directory")
 
 add_dependencies(TextovaHra copy_assets)
-add_dependencies(ItemTest copy_assets)
-
-
