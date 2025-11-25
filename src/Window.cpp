@@ -84,18 +84,48 @@ void Window::render() {
         });
     };
 
-    auto itemComponents = [&](std::vector<Item>& itemList) -> Components {;
+    int selectedItemPage = 0;
+
+    auto itemComponents = [&](std::vector<Item>& itemList) -> Components {
+        ;
         auto components = Components();
-        for (auto &i : itemList) {
-            components.push_back(ItemComponent(i));
+        auto buttons = Components();
+        auto itemTabs = Components();
+        int pageItems = 3;
+
+        int pageCount = std::ceil(static_cast<double>(itemList.size()) / pageItems);
+
+        for (int page = 0; page < pageCount; page++) {
+            auto list = std::vector<Item>(
+                itemList.begin() + page * pageItems,
+                itemList.begin() + std::min(static_cast<size_t>((page + 1) * pageItems), itemList.size())
+            );
+            buttons.push_back(
+                Button(std::to_string(page + 1), [&selectedItemPage, page] {
+                    selectedItemPage = page;
+                })
+            );
+
+            auto pageComponents = Components();
+            for (size_t i = page * pageItems; i < std::min(static_cast<size_t>((page + 1) * pageItems), itemList.size()); ++i) {
+                pageComponents.push_back(ItemComponent(itemList[i]));
+            }
+
+            itemTabs.push_back(
+                Container::Vertical(std::move(pageComponents))
+            );
         }
-        components.push_back(buyButton(itemList));
+
+        components.push_back(Container::Horizontal(std::move(buttons)) | flex);
+        components.push_back(Container::Tab(std::move(itemTabs), &selectedItemPage));
+        components.push_back(std::move(buyButton(itemList)));
         components.push_back(
             Renderer([&] {
                 return vbox(output);
             }));
         return components;
     };
+
 
     auto AchievementComponent = [&](const Achievement &achievement) -> Component {
             return Renderer([&] {
@@ -106,18 +136,43 @@ void Window::render() {
             });
     };
 
+    int selectedAchievementPage = 0;
 
-    auto achievementComponents = [&](std::vector<Achievement>& achievementList) -> Components {;
+    auto achievementComponents = [&](std::vector<Achievement>& achievementList) -> Components {
+        int pageItems = 6;
         auto components = Components();
-        for (auto &i : achievementList) {
-            components.push_back(AchievementComponent(i));
+        auto buttons = Components();
+
+        int pageCount = ceil(static_cast<double>(achievementList.size()) / pageItems);
+
+        for (int page = 0; page < pageCount; page++) {
+            auto list = std::vector<Achievement>(
+                achievementList.begin() + page * pageItems,
+                achievementList.begin() + std::min(static_cast<size_t>((page + 1) * pageItems), achievementList.size())
+            );
+            buttons.push_back(
+                Button(std::to_string(page + 1), [&selectedAchievementPage, page] {
+                    selectedAchievementPage = page;
+                })
+            );
+
+            auto pageComponents = Components();
+            for (size_t i = page * pageItems; i < std::min(static_cast<size_t>((page + 1) * pageItems), achievementList.size()); ++i) {
+                pageComponents.push_back(AchievementComponent(achievementList[i]));
+            }
+
+            components.push_back(
+                Container::Vertical(std::move(pageComponents))
+            );
         }
-        components.push_back(
-            Renderer([&] {
-                return vbox(output);
-            }));
-        return components;
+
+        auto result = Components();
+        result.push_back(Container::Horizontal(std::move(buttons)) | flex);
+        result.push_back(Container::Tab(std::move(components), &selectedAchievementPage));
+        return result;
     };
+
+
 
     int tab_selected = 0;
 

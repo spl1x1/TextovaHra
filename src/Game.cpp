@@ -36,7 +36,33 @@ void Game::initCookie(ScreenInteractive* screen) {
 
     Upgrades.push_back(ReinforcedFinger());
 
-    Achievements.push_back(TestA());
+    Achievements.push_back(Achievement::CookieMilestone(100));
+    Achievements.push_back(Achievement::CookieMilestone(1000));
+    Achievements.push_back(Achievement::CookieMilestone(10000));
+    Achievements.push_back(Achievement::CookieMilestone(100000));
+    Achievements.push_back(Achievement::CookieMilestone(1000000));
+
+    Achievements.push_back(Achievement::LevelMilestone(2));
+    Achievements.push_back(Achievement::LevelMilestone(10));
+    Achievements.push_back(Achievement::LevelMilestone(50));
+    Achievements.push_back(Achievement::LevelMilestone(100));
+    Achievements.push_back(Achievement::LevelMilestone(500));
+
+    Achievements.push_back(Achievement::CookiesInBankMilestone(10000));
+    Achievements.push_back(Achievement::CookiesInBankMilestone(100000));
+    Achievements.push_back(Achievement::CookiesInBankMilestone(1000000));
+
+    Achievements.push_back(Achievement::CPSMilestone(10));
+    Achievements.push_back(Achievement::CPSMilestone(100));
+    Achievements.push_back(Achievement::CPSMilestone(1000));
+
+
+    Achievements.push_back(Achievement::CPMilestone(10));
+    Achievements.push_back(Achievement::CPMilestone(100));
+    Achievements.push_back(Achievement::CPMilestone(1000));
+
+
+
 
     this->screen = screen;
 
